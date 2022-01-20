@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// コンテナにサービスを追加する。
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
@@ -26,7 +26,7 @@ builder.Services.AddRazorPages();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// HTTPリクエストパイプラインを設定します。
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
@@ -35,7 +35,7 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    // HSTSのデフォルト値は30日です。本番環境では、この値を変更することができます。 https://aka.ms/aspnetcore-hsts
     app.UseHsts();
 }
 

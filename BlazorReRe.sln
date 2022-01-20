@@ -3,11 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorReRe.Server", "BlazorReRe\Server\BlazorReRe.Server.csproj", "{E8A4617B-B0B2-4AAE-8E39-6EDA1FE2C54B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorReRe.Server", "BlazorReRe\Server\BlazorReRe.Server.csproj", "{E8A4617B-B0B2-4AAE-8E39-6EDA1FE2C54B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorReRe.Client", "BlazorReRe\Client\BlazorReRe.Client.csproj", "{A225BEC1-57CF-446B-B333-2D2F0C14A296}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorReRe.Client", "BlazorReRe\Client\BlazorReRe.Client.csproj", "{A225BEC1-57CF-446B-B333-2D2F0C14A296}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorReRe.Shared", "BlazorReRe\Shared\BlazorReRe.Shared.csproj", "{B397E7A4-3D14-41CF-B48E-979C3D98F866}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorReRe.Shared", "BlazorReRe\Shared\BlazorReRe.Shared.csproj", "{B397E7A4-3D14-41CF-B48E-979C3D98F866}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3BF93150-7A50-4884-B236-2F5E90576A5D}"
+	ProjectSection(SolutionItems) = preProject
+		Note.md = Note.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
