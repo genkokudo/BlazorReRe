@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace BlazorReRe.Server.Models
+namespace Infrastructure.Models
 {
     public class ApplicationUser : IdentityUser
     {
