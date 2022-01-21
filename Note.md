@@ -30,14 +30,24 @@ BlazorPractice‚ÌApplicationƒvƒƒWƒFƒNƒg‚Ì‚æ‚¤‚É•ª‚¯‚é•K—v‚Í–³‚¢‚ÆŽv‚¤‚Ì‚ÅA‚»‚±‚
 * DbContext‚ÉXVŽž‚ÉŽ©“®‚ÅŠÄ¸€–Ú‚ð“ü‚ê‚é‹@”\‚ð’Ç‰Á
 BlazorHeroContext‚ðƒRƒs[‚µ‚Ä‚«‚ÄA‘«‚è‚È‚¢ƒT[ƒrƒX‚àƒRƒs[‚µ‚Ä‚­‚éB
 
+* AutoMapper‚ðŽg—p‚·‚é
+‚µ‚ã‚­‚¾‚¢BBlazorHero‚©‚çŽÊ‚µ‚Ä‚­‚é‚±‚Æ
+* MediateR‚ðŽg—p‚·‚é
+‚µ‚ã‚­‚¾‚¢BBlazorHero‚©‚çŽÊ‚µ‚Ä‚­‚é‚±‚Æ
 * ƒf[ƒ^ˆê——‚ÌŽæ“¾i‰æ–Ê‚ðì‚éj
-
-
+Client‚ÌPages‚ÉV‚µ‚­ƒy[ƒW‚ðì¬B  
+NavMenu.razor‚ÉƒŠƒ“ƒN‚ð’Ç‰Á‚·‚éB  
+Server‚ÉAPIƒRƒ“ƒgƒ[ƒ‰‚ðì¬‚·‚é
 
 # ‚â‚é‚±‚Æ
 * ƒ†[ƒU‚ªƒf[ƒ^‚ð“o˜^‚·‚é(CRUD)
+BlazorHero‚Ý‚½‚¢‚ÉResult‚Åƒ‰ƒbƒv‚µ‚È‚­‚Ä‚¢‚¢‚ÆŽv‚¤‚Ì‚ÅA 
+c‚Å‚à‘S‚Ä‚ÌAPIŒ‹‰Ê‚ÉSucceededƒtƒ‰ƒO‚ÆMessages‚Í‚ ‚Á‚½•û‚ª‚¢‚¢‚©B 
+https://www.c-sharpcorner.com/article/crud-operations-using-blazor-net-6-0-entity-framework-core/
 * Šeƒe[ƒuƒ‹‚Éƒ†[ƒUID‚ðŽ‚½‚¹‚ÄA“o˜^Žž‚ÉŽ©“®‚Å“ü‚ê‚éiƒCƒ“ƒ^ƒtƒF[ƒX‚ð’Ç‰Á‚·‚é‚ªACRUDƒCƒ“ƒ^ƒtƒF[ƒX‚Æ‚Í•ª‚¯‚éj
 * ƒOƒ[ƒoƒ‹ƒNƒGƒŠƒtƒBƒ‹ƒ^‚ðŽÀ‘•‚µ‚ÄAƒ†[ƒU‚ª“o˜^‚µ‚½ƒf[ƒ^‚¾‚¯•\Ž¦‚·‚é
+
+
 
 
 

@@ -25,10 +25,10 @@ namespace Infrastructure.Contexts
             _currentUserService = currentUserService;
         }
 
-        public DbSet<Product>? Products { get; set; }
-        public DbSet<Brand>? Brands { get; set; }
-        public DbSet<Document>? Documents { get; set; }
-        public DbSet<DocumentType>? DocumentTypes { get; set; }
+        public DbSet<Product> Products { get; set; } = null!;
+        public DbSet<Brand> Brands { get; set; } = null!;
+        public DbSet<Document> Documents { get; set; } = null!;
+        public DbSet<DocumentType> DocumentTypes { get; set; } = null!;
 
         /// <summary>
         /// IAuditableEntityを実装している場合
