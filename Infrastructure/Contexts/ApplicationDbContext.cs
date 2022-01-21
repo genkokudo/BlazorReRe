@@ -1,58 +1,69 @@
-﻿using Domain.Entities.Catalog;
+﻿using Domain.Contracts;
+using Domain.Entities.Catalog;
 using Domain.Entities.Misc;
 using Duende.IdentityServer.EntityFramework.Options;
 using Infrastructure.Models;
+using Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Contexts
 {
+    /// <summary>
+    /// IAuditableEntityを実装しているテーブルに関しては、CreatedByなどが自動入力されるので
+    /// これらのフィールドはコントローラでセットしないでください。
+    /// </summary>
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
+        private readonly ICurrentUserService _currentUserService;
+
         public ApplicationDbContext(
             DbContextOptions options,
-            IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
+            IOptions<OperationalStoreOptions> operationalStoreOptions, ICurrentUserService currentUserService) : base(options, operationalStoreOptions)
         {
+            _currentUserService = currentUserService;
         }
 
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Brand> Brands { get; set; }
-        public DbSet<Document> Documents { get; set; }
-        public DbSet<DocumentType> DocumentTypes { get; set; }
+        public DbSet<Product>? Products { get; set; }
+        public DbSet<Brand>? Brands { get; set; }
+        public DbSet<Document>? Documents { get; set; }
+        public DbSet<DocumentType>? DocumentTypes { get; set; }
 
-        ///// <summary>
-        ///// CreatedByなどを入力する機能を追加
-        ///// ※SaveChangesは変えてないので注意
-        ///// </summary>
-        ///// <param name="cancellationToken"></param>
-        ///// <returns></returns>
-        //public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
-        //{
-        //    foreach (var entry in ChangeTracker.Entries<IAuditableEntity>().ToList())
-        //    {
-        //        switch (entry.State)
-        //        {
-        //            case EntityState.Added:
-        //                entry.Entity.CreatedOn = _dateTimeService.NowUtc;
-        //                entry.Entity.CreatedBy = _currentUserService.UserId;
-        //                break;
+        /// <summary>
+        /// IAuditableEntityを実装している場合
+        /// CreatedByなどを入力する機能を追加
+        /// ※SaveChangesは変えてないので注意
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
+        {
+            foreach (var entry in ChangeTracker.Entries<IAuditableEntity>().ToList())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.Entity.CreatedOn = DateTime.UtcNow;
+                        entry.Entity.CreatedBy = _currentUserService.UserId;
+                        break;
 
-        //            case EntityState.Modified:
-        //                entry.Entity.LastModifiedOn = _dateTimeService.NowUtc;
-        //                entry.Entity.LastModifiedBy = _currentUserService.UserId;
-        //                break;
-        //        }
-        //    }
-        //    if (_currentUserService.UserId == null)
-        //    {
-        //        return await base.SaveChangesAsync(cancellationToken);
-        //    }
-        //    else
-        //    {
-        //        return await base.SaveChangesAsync(_currentUserService.UserId, cancellationToken);
-        //    }
-        //}
+                    case EntityState.Modified:
+                        entry.Entity.LastModifiedOn = DateTime.UtcNow;
+                        entry.Entity.LastModifiedBy = _currentUserService.UserId;
+                        break;
+                }
+            }
+            if (_currentUserService.UserId == null)
+            {
+                return await base.SaveChangesAsync(cancellationToken);
+            }
+            else
+            {
+                return await base.SaveChangesAsync(cancellationToken);
+                //return await base.SaveChangesAsync(_currentUserService.UserId, cancellationToken);    // AuditableContextは実装していないのでコメントアウト
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

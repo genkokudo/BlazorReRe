@@ -1,16 +1,21 @@
-﻿using Infrastructure.Contexts;
+﻿using BlazorReRe.Server.Extentions;
+using BlazorReRe.Server.Services;
+using Infrastructure.Contexts;
 using Infrastructure.Models;
+using Infrastructure.Services;
+using Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlazorReRe.Server.Extensions
+namespace BlazorReRe.Server.Extentions
 {
     internal static class WebApplicationBuilderExtensions
     {
         public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
         {
             // コンテナにサービスを追加する。
+            builder.Services.AddCurrentUserService();               // 現在のユーザのClainやIDを取得するアクセサをサービス登録する
             builder.Services.AddDatabase(builder.Configuration);
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -25,6 +30,8 @@ namespace BlazorReRe.Server.Extensions
             // コントローラとRazor
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
+
+
             return builder;
         }
 
@@ -40,7 +47,7 @@ namespace BlazorReRe.Server.Extensions
             => services
                 .AddDbContext<ApplicationDbContext>(options => options
                     .UseSqlServer(configuration.GetConnectionString("DefaultConnection")))
-            //.AddTransient<IDatabaseSeeder, DatabaseSeeder>()
+            .AddTransient<IDatabaseSeeder, DatabaseSeeder>()
             ;
     }
 
@@ -73,6 +80,7 @@ namespace BlazorReRe.Server.Extensions
             app.UseAuthorization();                         // ユーザーがセキュリティで保護されたリソースにアクセスすることが承認されます。
 
             app.UseEndpoints();
+            app.Initialize();                               // IDatabaseSeederで初期化（DB初期データがまだない場合にデータを入れる）
 
             return app;
         }
@@ -85,5 +93,37 @@ namespace BlazorReRe.Server.Extensions
                 endpoints.MapFallbackToFile("index.html");
                 //endpoints.MapHub<SignalRHub>(ApplicationConstants.SignalR.HubUrl);
             });
+
+        /// <summary>
+        /// 現在のユーザのClainやIDを取得するアクセサを登録する
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        internal static IServiceCollection AddCurrentUserService(this IServiceCollection services)
+        {
+            services.AddHttpContextAccessor();  // IHttpContextAccessorについてデフォルトの実装を追加
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
+            return services;
+        }
+
+        /// <summary>
+        /// IDatabaseSeederで初期化する
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="_configuration"></param>
+        /// <returns></returns>
+        internal static IApplicationBuilder Initialize(this IApplicationBuilder app)
+        {
+            using var serviceScope = app.ApplicationServices.CreateScope();
+
+            var initializers = serviceScope.ServiceProvider.GetServices<IDatabaseSeeder>();
+
+            foreach (var initializer in initializers)
+            {
+                initializer.Initialize();
+            }
+
+            return app;
+        }
     }
 }

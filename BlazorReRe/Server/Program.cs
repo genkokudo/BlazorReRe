@@ -1,4 +1,4 @@
-using BlazorReRe.Server.Extensions;
+using BlazorReRe.Server.Extentions;
 
 // Šg’£‚µ‚Ä‚»‚Á‚¿‚Å‰Šú‰»ˆ—‚â‚Á‚Ä‚¢‚é‚¯‚ÇA‘å‚µ‚½—Ê‚¶‚á‚È‚¢‚µŒ‹‹ÇD‚Ý‚¾‚æ‚Ë‚Á‚ÄŽv‚¢‚Ü‚µ‚½
 // ‚©‚¦‚Á‚Ä•ª‚©‚è‚É‚­‚¢
