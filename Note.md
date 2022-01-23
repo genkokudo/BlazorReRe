@@ -51,6 +51,7 @@ ClientのPagesに新しくページを作成。
 NavMenu.razorにリンクを追加する。  
 
 # やること
+UnitOfWorkは要らないと思うので排除する。
 * ユーザがデータを登録する(CRUD)
 https://www.c-sharpcorner.com/article/crud-operations-using-blazor-net-6-0-entity-framework-core/
 * 各テーブルにユーザIDを持たせて、登録時に自動で入れる（インタフェースを追加するが、CRUDインタフェースとは分ける）
