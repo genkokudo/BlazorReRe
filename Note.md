@@ -30,27 +30,39 @@ BlazorPractice‚ÌApplicationƒvƒƒWƒFƒNƒg‚Ì‚æ‚¤‚É•ª‚¯‚é•K—v‚Í–³‚¢‚ÆŽv‚¤‚Ì‚ÅA‚»‚±‚
 * DbContext‚ÉXVŽž‚ÉŽ©“®‚ÅŠÄ¸€–Ú‚ð“ü‚ê‚é‹@”\‚ð’Ç‰Á
 BlazorHeroContext‚ðƒRƒs[‚µ‚Ä‚«‚ÄA‘«‚è‚È‚¢ƒT[ƒrƒX‚àƒRƒs[‚µ‚Ä‚­‚éB
 
+* ƒf[ƒ^ˆê——‚ÌŽæ“¾iƒT[ƒo‘¤j
+Server.Controllers‚ÉAPIƒRƒ“ƒgƒ[ƒ‰‚ðì¬‚·‚é
+BaseApiController‚ðì¬‚µAƒRƒ“ƒgƒ[ƒ‰‚ÍMediatR‚ðŽg—p‚·‚é‚æ‚¤‚ÉŽw’èBi—v‚ç‚È‚¢‚©‚à[j
+
+* MediatR‚ðŽg—p‚·‚é
+Server‚Ì‰Šúˆ—‚ÉAddAutoMapper‚ÆAddMediatR‚ð’Ç‰ÁB  
+BlazorHero‚©‚çˆÚ‚·BApplication.Features‚©‚çAInfrastructure.MediatR‚ÖB  
+BlazorHero‚ÍƒtƒHƒ‹ƒ_•ª‚¯‚·‚¬‚È‚Ì‚ÅAƒe[ƒuƒ‹‚²‚Æ‚ÉƒtƒHƒ‹ƒ_‚ðØ‚éB  
+ŒŸõ‚ÍQuery‚ÆResponseADBXV‚ÍCommand‚Æ‚¢‚¤–¼‘O‚ð•t‚¯‚éB  
+
+‚Ç‚¤‚¹‘S‚Ä‚ÌAPIŒ‹‰Ê‚ÉSucceededƒtƒ‰ƒO‚ÆMessages‚Í‚ ‚Á‚½•û‚ª‚¢‚¢‚Ì‚ÅABlazorHero‚Ý‚½‚¢‚ÉResult‚Åƒ‰ƒbƒv‚µ‚½•û‚ª•Ö—˜B   
+‚Æ‚¢‚¤‚í‚¯‚ÅBlazorPractice.Shared.Wrapper‚©‚çResult‚ðˆÚ‚µ‚Ä‚­‚éB
+
 * AutoMapper‚ðŽg—p‚·‚é
 ‚µ‚ã‚­‚¾‚¢BBlazorHero‚©‚çŽÊ‚µ‚Ä‚­‚é‚±‚Æ
-* MediateR‚ðŽg—p‚·‚é
-‚µ‚ã‚­‚¾‚¢BBlazorHero‚©‚çŽÊ‚µ‚Ä‚­‚é‚±‚Æ
-* ƒf[ƒ^ˆê——‚ÌŽæ“¾i‰æ–Ê‚ðì‚éj
+
+* ƒf[ƒ^ˆê——‚ÌŽæ“¾iƒNƒ‰ƒCƒAƒ“ƒg‘¤j
 Client‚ÌPages‚ÉV‚µ‚­ƒy[ƒW‚ðì¬B  
 NavMenu.razor‚ÉƒŠƒ“ƒN‚ð’Ç‰Á‚·‚éB  
-Server‚ÉAPIƒRƒ“ƒgƒ[ƒ‰‚ðì¬‚·‚é
 
 # ‚â‚é‚±‚Æ
 * ƒ†[ƒU‚ªƒf[ƒ^‚ð“o˜^‚·‚é(CRUD)
-BlazorHero‚Ý‚½‚¢‚ÉResult‚Åƒ‰ƒbƒv‚µ‚È‚­‚Ä‚¢‚¢‚ÆŽv‚¤‚Ì‚ÅA 
-c‚Å‚à‘S‚Ä‚ÌAPIŒ‹‰Ê‚ÉSucceededƒtƒ‰ƒO‚ÆMessages‚Í‚ ‚Á‚½•û‚ª‚¢‚¢‚©B 
 https://www.c-sharpcorner.com/article/crud-operations-using-blazor-net-6-0-entity-framework-core/
 * Šeƒe[ƒuƒ‹‚Éƒ†[ƒUID‚ðŽ‚½‚¹‚ÄA“o˜^Žž‚ÉŽ©“®‚Å“ü‚ê‚éiƒCƒ“ƒ^ƒtƒF[ƒX‚ð’Ç‰Á‚·‚é‚ªACRUDƒCƒ“ƒ^ƒtƒF[ƒX‚Æ‚Í•ª‚¯‚éj
 * ƒOƒ[ƒoƒ‹ƒNƒGƒŠƒtƒBƒ‹ƒ^‚ðŽÀ‘•‚µ‚ÄAƒ†[ƒU‚ª“o˜^‚µ‚½ƒf[ƒ^‚¾‚¯•\Ž¦‚·‚é
 
+Server‚ÆInfrastructure‚É‘Î‚µ‚Ä  
+PM> Install-Package AutoMapper  
+PM> Install-Package MediatR  
+PM> Install-Package MediatR.Extensions.Microsoft.DependencyInjection  
+PM> Install-Package AutoMapper.Extensions.Microsoft.DependencyInjection  
 
-
-
-
+* FluentValidation
 
 
 

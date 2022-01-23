@@ -7,6 +7,8 @@ using Infrastructure.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
+using MediatR;
 
 namespace BlazorReRe.Server.Extentions
 {
@@ -18,6 +20,7 @@ namespace BlazorReRe.Server.Extentions
             builder.Services.AddCurrentUserService();               // 現在のユーザのClainやIDを取得するアクセサをサービス登録する
             builder.Services.AddDatabase(builder.Configuration);
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+            builder.Services.AddApplicationLayer();                         // AutoMapperとMediatRを使用する
 
             // 認証
             builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -33,6 +36,17 @@ namespace BlazorReRe.Server.Extentions
 
 
             return builder;
+        }
+        /// <summary>
+        /// AutoMapperとMediatRを使用する
+        /// </summary>
+        /// <param name="services"></param>
+        public static void AddApplicationLayer(this IServiceCollection services)
+        {
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            //services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         }
 
         /// <summary>

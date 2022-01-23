@@ -1,16 +1,10 @@
-﻿using BlazorPractice.Application.Features.DocumentTypes.Commands.AddEdit;
-using BlazorPractice.Application.Features.DocumentTypes.Commands.Delete;
-using BlazorPractice.Application.Features.DocumentTypes.Queries.Export;
-using BlazorPractice.Application.Features.DocumentTypes.Queries.GetAll;
-using BlazorPractice.Application.Features.DocumentTypes.Queries.GetById;
-using BlazorPractice.Shared.Constants.Permission;
+﻿using Infrastructure.MediatR.DocumentTypes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace BlazorReRe.Server.Controllers.Misc
 {
-    // TODO:_mediatorを写してくること
     [Route("api/[controller]")]
     [ApiController]
     //[Authorize]
