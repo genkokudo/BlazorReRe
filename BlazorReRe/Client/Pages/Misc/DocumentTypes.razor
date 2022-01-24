@@ -35,26 +35,21 @@ else
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Address</th>
-                <th>Department</th>
-                <th>Cell No</th>
-                <th>E-mail</th>
+                <th>Description</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var user in userList)
             {
                 <tr>
-                    <td>@user.Userid</td>
-                    <td>@user.Username</td>
-                    <td>@user.Address</td>
-                    <td>@user.Cellnumber</td>
-                    <td>@user.Emailid</td>
+                    <td>@user.Id</td>
+                    <td>@user.Name</td>
+                    <td>@user.Description</td>
                     <td>
-                        <a href='/user/edit/@user.Userid' class="btn btn-outline-dark" role="button">
+                        <a href='/user/edit/@user.Id' class="btn btn-outline-dark" role="button">
                             Edit
                         </a>
-                        <a href='/user/delete/@user.Userid' class="btn btn-outline-danger" role="button">
+                        <a href='/user/delete/@user.Id' class="btn btn-outline-danger" role="button">
                             Delete
                         </a>
                     </td>
@@ -67,9 +62,9 @@ else
 @code {
     // https://www.c-sharpcorner.com/article/crud-operations-using-blazor-net-6-0-entity-framework-core/
     // DataにList<GetAllDocumentTypesResponse>が格納されているレスポンスが来ることになっている
-    protected List<User> userList = new();
-    protected List<User> searchUserData = new();
-    protected User user = new();
+    protected List<GetAllDocumentTypesResponse> userList = new();
+    protected List<GetAllDocumentTypesResponse> searchUserData = new();
+    protected GetAllDocumentTypesResponse user = new();
     protected string SearchString { get; set; } = string.Empty;
     protected override async Task OnInitializedAsync()
     {
@@ -77,7 +72,7 @@ else
     }
     protected async Task GetUser()
     {
-        userList = await Http.GetFromJsonAsync<List<User>>("api/DocumentTypes");
+        userList = await Http.GetFromJsonAsync<List<GetAllDocumentTypesResponse>>("api/DocumentTypes");
         searchUserData = userList;
     }
     protected void FilterUser()
@@ -85,7 +80,7 @@ else
         if (!string.IsNullOrEmpty(SearchString))
         {
             userList = searchUserData
-                .Where(x => x.Username.IndexOf(SearchString, StringComparison.OrdinalIgnoreCase) != -1)
+                .Where(x => x.Name.IndexOf(SearchString, StringComparison.OrdinalIgnoreCase) != -1)
                 .ToList();
         }
         else
@@ -93,9 +88,9 @@ else
             userList = searchUserData;
         }
     }
-    protected void DeleteConfirm(int userID)
+    protected void DeleteConfirm(int Id)
     {
-        user = userList.FirstOrDefault(x => x.Userid == userID);
+        user = userList.FirstOrDefault(x => x.Id == Id);
     }
     public void ResetSearch()
     {
