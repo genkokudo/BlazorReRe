@@ -12,9 +12,9 @@ namespace BlazorReRe.Shared.Wrapper
 
         public List<T> Data { get; set; }
 
-        internal PaginatedResult(bool succeeded, List<T> data = default, List<string> messages = null, int count = 0, int page = 1, int pageSize = 10)
+        internal PaginatedResult(bool succeeded, List<T>? data = default, List<string>? messages = null, int count = 0, int page = 1, int pageSize = 10)
         {
-            Data = data;
+            Data = data!;
             CurrentPage = page;
             Succeeded = succeeded;
             PageSize = pageSize;

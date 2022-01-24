@@ -18,6 +18,6 @@ namespace BlazorReRe.Shared.Wrapper
     /// <typeparam name="T">データ形式を指定する</typeparam>
     public interface IResult<out T> : IResult
     {
-        T Data { get; }
+        T? Data { get; }
     }
 }

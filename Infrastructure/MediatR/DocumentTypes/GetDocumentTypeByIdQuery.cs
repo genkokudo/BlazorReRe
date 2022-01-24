@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using BlazorPractice.Application.Interfaces.Repositories;
-using BlazorPractice.Domain.Entities.Misc;
-using BlazorPractice.Shared.Wrapper;
+using BlazorReRe.Shared.Wrapper;
+using Infrastructure.Contexts;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,18 +14,18 @@ namespace Infrastructure.MediatR.DocumentTypes
 
     internal class GetDocumentTypeByIdQueryHandler : IRequestHandler<GetDocumentTypeByIdQuery, Result<GetDocumentTypeByIdResponse>>
     {
-        private readonly IUnitOfWork<int> _unitOfWork;
+        private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public GetDocumentTypeByIdQueryHandler(IUnitOfWork<int> unitOfWork, IMapper mapper)
+        public GetDocumentTypeByIdQueryHandler(ApplicationDbContext dbContext, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
+            _dbContext = dbContext;
             _mapper = mapper;
         }
 
         public async Task<Result<GetDocumentTypeByIdResponse>> Handle(GetDocumentTypeByIdQuery query, CancellationToken cancellationToken)
         {
-            var documentType = await _unitOfWork.Repository<DocumentType>().GetByIdAsync(query.Id);
+            var documentType = await _dbContext.DocumentTypes.FindAsync(query.Id);
             var mappedDocumentType = _mapper.Map<GetDocumentTypeByIdResponse>(documentType);
             return await Result<GetDocumentTypeByIdResponse>.SuccessAsync(mappedDocumentType);
         }

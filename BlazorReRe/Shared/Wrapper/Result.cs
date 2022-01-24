@@ -80,7 +80,7 @@ namespace BlazorReRe.Shared.Wrapper
         {
         }
 
-        public T Data { get; set; }
+        public T? Data { get; set; }
 
         public new static Result<T> Fail()
         {

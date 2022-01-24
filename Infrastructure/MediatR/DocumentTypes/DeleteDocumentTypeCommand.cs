@@ -1,7 +1,6 @@
-﻿using BlazorPractice.Application.Interfaces.Repositories;
-using BlazorPractice.Domain.Entities.Misc;
-using BlazorPractice.Shared.Constants.Application;
-using BlazorPractice.Shared.Wrapper;
+﻿using BlazorReRe.Shared.Wrapper;
+using Domain.Entities.Misc;
+using Infrastructure.Contexts;
 using MediatR;
 using Microsoft.Extensions.Localization;
 using System.Threading;
@@ -16,38 +15,39 @@ namespace Infrastructure.MediatR.DocumentTypes
 
     internal class DeleteDocumentTypeCommandHandler : IRequestHandler<DeleteDocumentTypeCommand, Result<int>>
     {
-        private readonly IDocumentRepository _documentRepository;
+        //private readonly IDocumentRepository _documentRepository;
         private readonly IStringLocalizer<DeleteDocumentTypeCommandHandler> _localizer;
-        private readonly IUnitOfWork<int> _unitOfWork;
+        private readonly ApplicationDbContext _dbContext;
 
-        public DeleteDocumentTypeCommandHandler(IUnitOfWork<int> unitOfWork, IDocumentRepository documentRepository, IStringLocalizer<DeleteDocumentTypeCommandHandler> localizer)
+        public DeleteDocumentTypeCommandHandler(ApplicationDbContext dbContext, IStringLocalizer<DeleteDocumentTypeCommandHandler> localizer)
         {
-            _unitOfWork = unitOfWork;
-            _documentRepository = documentRepository;
+            _dbContext = dbContext;
+            //_documentRepository = documentRepository;
             _localizer = localizer;
         }
 
         public async Task<Result<int>> Handle(DeleteDocumentTypeCommand command, CancellationToken cancellationToken)
         {
-            var isDocumentTypeUsed = await _documentRepository.IsDocumentTypeUsed(command.Id);
-            if (!isDocumentTypeUsed)
-            {
-                var documentType = await _unitOfWork.Repository<DocumentType>().GetByIdAsync(command.Id);
+            // 使用中のデータか確認する
+            //var isDocumentTypeUsed = _dbContext.Documents.AnyAsync(b => b.DocumentTypeId == documentTypeId);
+            //if (!isDocumentTypeUsed)
+            //{
+                var documentType = await _dbContext.DocumentTypes.FindAsync(command.Id);
                 if (documentType != null)
                 {
-                    await _unitOfWork.Repository<DocumentType>().DeleteAsync(documentType);
-                    await _unitOfWork.CommitAndRemoveCache(cancellationToken, ApplicationConstants.Cache.GetAllDocumentTypesCacheKey);
+                    _dbContext.Remove(documentType);
+                    await _dbContext.SaveChangesAsync();
                     return await Result<int>.SuccessAsync(documentType.Id, _localizer["Document Type Deleted"]);
                 }
                 else
                 {
                     return await Result<int>.FailAsync(_localizer["Document Type Not Found!"]);
                 }
-            }
-            else
-            {
-                return await Result<int>.FailAsync(_localizer["Deletion Not Allowed"]);
-            }
+            //}
+            //else
+            //{
+            //    return await Result<int>.FailAsync(_localizer["Deletion Not Allowed"]);
+            //}
         }
     }
 }

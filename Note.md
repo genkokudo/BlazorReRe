@@ -30,11 +30,11 @@ BlazorPractice‚ÌApplicationƒvƒƒWƒFƒNƒg‚Ì‚æ‚¤‚É•ª‚¯‚é•K—v‚Í–³‚¢‚Æv‚¤‚Ì‚ÅA‚»‚±‚
 * DbContext‚ÉXV‚É©“®‚ÅŠÄ¸€–Ú‚ğ“ü‚ê‚é‹@”\‚ğ’Ç‰Á
 BlazorHeroContext‚ğƒRƒs[‚µ‚Ä‚«‚ÄA‘«‚è‚È‚¢ƒT[ƒrƒX‚àƒRƒs[‚µ‚Ä‚­‚éB
 
-* ƒf[ƒ^ˆê——‚Ìæ“¾iƒT[ƒo‘¤j
+* ƒf[ƒ^ˆê——‚Ìæ“¾iƒT[ƒo‘¤j  
 Server.Controllers‚ÉAPIƒRƒ“ƒgƒ[ƒ‰‚ğì¬‚·‚é
 BaseApiController‚ğì¬‚µAƒRƒ“ƒgƒ[ƒ‰‚ÍMediatR‚ğg—p‚·‚é‚æ‚¤‚Éw’èBi—v‚ç‚È‚¢‚©‚à[j
 
-* MediatR‚ğg—p‚·‚é
+* MediatR‚ğg—p‚·‚é  
 Server‚Ì‰Šúˆ—‚ÉAddAutoMapper‚ÆAddMediatR‚ğ’Ç‰ÁB  
 BlazorHero‚©‚çˆÚ‚·BApplication.Features‚©‚çAInfrastructure.MediatR‚ÖB  
 BlazorHero‚ÍƒtƒHƒ‹ƒ_•ª‚¯‚·‚¬‚È‚Ì‚ÅAƒe[ƒuƒ‹‚²‚Æ‚ÉƒtƒHƒ‹ƒ_‚ğØ‚éB  
@@ -43,19 +43,21 @@ BlazorHero‚ÍƒtƒHƒ‹ƒ_•ª‚¯‚·‚¬‚È‚Ì‚ÅAƒe[ƒuƒ‹‚²‚Æ‚ÉƒtƒHƒ‹ƒ_‚ğØ‚éB
 ‚Ç‚¤‚¹‘S‚Ä‚ÌAPIŒ‹‰Ê‚ÉSucceededƒtƒ‰ƒO‚ÆMessages‚Í‚ ‚Á‚½•û‚ª‚¢‚¢‚Ì‚ÅABlazorHero‚İ‚½‚¢‚ÉResult‚Åƒ‰ƒbƒv‚µ‚½•û‚ª•Ö—˜B   
 ‚Æ‚¢‚¤‚í‚¯‚ÅBlazorPractice.Shared.Wrapper‚©‚çResult‚ğˆÚ‚µ‚Ä‚­‚éB
 
-* AutoMapper‚ğg—p‚·‚é
+* AutoMapper‚ğg—p‚·‚é  
 ‚µ‚ã‚­‚¾‚¢BBlazorHero‚©‚çÊ‚µ‚Ä‚­‚é‚±‚Æ
 
-* ƒf[ƒ^ˆê——‚Ìæ“¾iƒNƒ‰ƒCƒAƒ“ƒg‘¤j
+* Localizer‚ğÀ‘•‚·‚é  
+‚µ‚½•û‚ª—Ç‚¢‚¯‚ÇAÀ‘•‚Ì—¬‚ê‚ª•ª‚©‚Á‚Ä‚¢‚È‚¢‚Ì‚ÅƒRƒƒ“ƒgƒAƒEƒg‚µ‚Ä‚¨‚¢‚ÄCRUD‚ªo—ˆ‚½‚ç‚Â‚¯‚éB
+
+* ƒf[ƒ^ˆê——‚Ìæ“¾iƒNƒ‰ƒCƒAƒ“ƒg‘¤j  
 Client‚ÌPages‚ÉV‚µ‚­ƒy[ƒW‚ğì¬B  
 NavMenu.razor‚ÉƒŠƒ“ƒN‚ğ’Ç‰Á‚·‚éB  
 
 # ‚â‚é‚±‚Æ
-UnitOfWork‚Í—v‚ç‚È‚¢‚Æv‚¤‚Ì‚Å”rœ‚·‚éB
-* ƒ†[ƒU‚ªƒf[ƒ^‚ğ“o˜^‚·‚é(CRUD)
+* ƒ†[ƒU‚ªƒf[ƒ^‚ğ“o˜^‚·‚é(CRUD)  
 https://www.c-sharpcorner.com/article/crud-operations-using-blazor-net-6-0-entity-framework-core/
-* Šeƒe[ƒuƒ‹‚Éƒ†[ƒUID‚ğ‚½‚¹‚ÄA“o˜^‚É©“®‚Å“ü‚ê‚éiƒCƒ“ƒ^ƒtƒF[ƒX‚ğ’Ç‰Á‚·‚é‚ªACRUDƒCƒ“ƒ^ƒtƒF[ƒX‚Æ‚Í•ª‚¯‚éj
-* ƒOƒ[ƒoƒ‹ƒNƒGƒŠƒtƒBƒ‹ƒ^‚ğÀ‘•‚µ‚ÄAƒ†[ƒU‚ª“o˜^‚µ‚½ƒf[ƒ^‚¾‚¯•\¦‚·‚é
+* Šeƒe[ƒuƒ‹‚Éƒ†[ƒUID‚ğ‚½‚¹‚ÄA“o˜^‚É©“®‚Å“ü‚ê‚éiƒCƒ“ƒ^ƒtƒF[ƒX‚ğ’Ç‰Á‚·‚é‚ªAŠÄ¸€–ÚƒCƒ“ƒ^ƒtƒF[ƒX‚Æ‚Í•ª‚¯‚éj
+* ƒOƒ[ƒoƒ‹ƒNƒGƒŠƒtƒBƒ‹ƒ^‚ğÀ‘•‚µ‚ÄAƒ†[ƒU‚ª“o˜^‚µ‚½ƒf[ƒ^‚¾‚¯•\¦‚·‚é  
 
 Server‚ÆInfrastructure‚É‘Î‚µ‚Ä  
 PM> Install-Package AutoMapper  
@@ -64,6 +66,20 @@ PM> Install-Package MediatR.Extensions.Microsoft.DependencyInjection
 PM> Install-Package AutoMapper.Extensions.Microsoft.DependencyInjection  
 
 * FluentValidation
+
+# ‚â‚ß‚½‚±‚Æ
+* UnitOfWorkƒpƒ^[ƒ“  
+¬‹K–Í‚ÌƒVƒXƒeƒ€‚Ìê‡A•’Ê‚É—v‚ç‚È‚¢
+
+* Repositoryƒpƒ^[ƒ“  
+RepositoryAsyncƒNƒ‰ƒX‚ÅCRUD‚ÌƒR[ƒh‚¾‚¯‹¤—Lo—ˆ‚é‚©‚ç•Ö—˜‚¾‚¯‚ÇcB  
+Include‚Å‚«‚È‚¢Bi‚Å‚«‚é‚¯‚Ç“ï‚µ‚¢Hj  
+‚â‚Á‚½‚Æ‚±‚ë‚Å‚»‚ñ‚È‚ÉƒR[ƒfƒBƒ“ƒO—Ê•Ï‚í‚ç‚È‚¢B
+
+* ŒŸõŒ‹‰Ê‚ÌƒLƒƒƒbƒVƒ…  
+—ûK‚È‚Ì‚Å‚µ‚È‚¢B
+
+
 
 
 

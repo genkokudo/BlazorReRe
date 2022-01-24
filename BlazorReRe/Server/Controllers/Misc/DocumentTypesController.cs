@@ -14,7 +14,7 @@ namespace BlazorReRe.Server.Controllers.Misc
         /// Get All Document Types
         /// </summary>
         /// <returns>Status 200 OK</returns>
-        [Authorize(Policy = Permissions.DocumentTypes.View)]
+        //[Authorize(Policy = Permissions.DocumentTypes.View)]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -27,7 +27,7 @@ namespace BlazorReRe.Server.Controllers.Misc
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Status 200 Ok</returns>
-        [Authorize(Policy = Permissions.DocumentTypes.View)]
+        //[Authorize(Policy = Permissions.DocumentTypes.View)]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -40,7 +40,7 @@ namespace BlazorReRe.Server.Controllers.Misc
         /// </summary>
         /// <param name="command"></param>
         /// <returns>Status 200 OK</returns>
-        [Authorize(Policy = Permissions.DocumentTypes.Create)]
+        //[Authorize(Policy = Permissions.DocumentTypes.Create)]
         [HttpPost]
         public async Task<IActionResult> Post(AddEditDocumentTypeCommand command)
         {
@@ -52,23 +52,23 @@ namespace BlazorReRe.Server.Controllers.Misc
         /// </summary>
         /// <param name="id"></param>
         /// <returns>Status 200 OK</returns>
-        [Authorize(Policy = Permissions.DocumentTypes.Delete)]
+        //[Authorize(Policy = Permissions.DocumentTypes.Delete)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             return Ok(await _mediator.Send(new DeleteDocumentTypeCommand { Id = id }));
         }
 
-        /// <summary>
-        /// Search Document Types and Export to Excel
-        /// </summary>
-        /// <param name="searchString"></param>
-        /// <returns></returns>
-        [Authorize(Policy = Permissions.DocumentTypes.Export)]
-        [HttpGet("export")]
-        public async Task<IActionResult> Export(string searchString = "")
-        {
-            return Ok(await _mediator.Send(new ExportDocumentTypesQuery(searchString)));
-        }
+        ///// <summary>
+        ///// Search Document Types and Export to Excel
+        ///// </summary>
+        ///// <param name="searchString"></param>
+        ///// <returns></returns>
+        ////[Authorize(Policy = Permissions.DocumentTypes.Export)]
+        //[HttpGet("export")]
+        //public async Task<IActionResult> Export(string searchString = "")
+        //{
+        //    return Ok(await _mediator.Send(new ExportDocumentTypesQuery(searchString)));
+        //}
     }
 }

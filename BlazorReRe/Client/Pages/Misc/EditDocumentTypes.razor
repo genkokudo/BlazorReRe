@@ -1,10 +1,11 @@
 ﻿@page "/document-types/create"
 @page "/document-types/edit/{id:int}"
-@using BlazorApp.Shared.Models
+@using Infrastructure.MediatR.DocumentTypes
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 <h1>@Title User</h1>
 <hr />
+<!--
 <EditForm Model="@user" OnValidSubmit="SaveUser">
     <DataAnnotationsValidator />
     <div class="mb-3">
@@ -40,34 +41,35 @@
         <button class="btn btn-light" @onclick="Cancel">Cancel</button>
     </div>
 </EditForm>
+-->
 @code {
     [Parameter]
-    public int userId { get; set; }
+    public int Id { get; set; }
     protected string Title = "Add";
-    protected User user = new();
-    protected override async Task OnParametersSetAsync()
-    {
-        if (userId != 0)
-        {
-            Title = "Edit";
-            user = await Http.GetFromJsonAsync<User>("api/User/" + userId);
-        }
-    }
-    protected async Task SaveUser()
-    {
-        if (user.Userid != 0)
-        {
-            await Http.PutAsJsonAsync("api/User", user);
-        }
-        else
-        {
-            await Http.PostAsJsonAsync("api/User", user);
-        }
-        Cancel();
-    }
-    public void Cancel()
-    {
-        NavigationManager.NavigateTo("/fetchuserdetails");
-    }
+    //protected User user = new();
+    //protected override async Task OnParametersSetAsync()
+    //{
+    //    if (userId != 0)
+    //    {
+    //        Title = "Edit";
+    //        user = await Http.GetFromJsonAsync<User>("api/User/" + Id);
+    //    }
+    //}
+    //protected async Task SaveUser()
+    //{
+    //    if (user.Userid != 0)
+    //    {
+    //        await Http.PutAsJsonAsync("api/User", user);
+    //    }
+    //    else
+    //    {
+    //        await Http.PostAsJsonAsync("api/User", user);
+    //    }
+    //    Cancel();
+    //}
+    //public void Cancel()
+    //{
+    //    NavigationManager.NavigateTo("/fetchuserdetails");
+    //}
 }
 

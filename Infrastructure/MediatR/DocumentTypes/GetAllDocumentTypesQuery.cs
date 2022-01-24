@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BlazorReRe.Shared.Wrapper;
+using Infrastructure.Contexts;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -17,22 +19,18 @@ namespace Infrastructure.MediatR.DocumentTypes
 
     internal class GetAllDocumentTypesQueryHandler : IRequestHandler<GetAllDocumentTypesQuery, Result<List<GetAllDocumentTypesResponse>>>
     {
-        private readonly IUnitOfWork<int> _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly IAppCache _cache;
+        private readonly ApplicationDbContext _dbContext;
 
-        public GetAllDocumentTypesQueryHandler(IUnitOfWork<int> unitOfWork, IMapper mapper, IAppCache cache)
+        public GetAllDocumentTypesQueryHandler(ApplicationDbContext dbContext, IMapper mapper)
         {
-            _unitOfWork = unitOfWork;
+            _dbContext = dbContext;
             _mapper = mapper;
-            _cache = cache;
         }
 
         public async Task<Result<List<GetAllDocumentTypesResponse>>> Handle(GetAllDocumentTypesQuery request, CancellationToken cancellationToken)
         {
-            Func<Task<List<DocumentType>>> getAllDocumentTypes = () => _unitOfWork.Repository<DocumentType>().GetAllAsync();
-            var documentTypeList = await _cache.GetOrAddAsync(ApplicationConstants.Cache.GetAllDocumentTypesCacheKey, getAllDocumentTypes);
-            var mappedDocumentTypes = _mapper.Map<List<GetAllDocumentTypesResponse>>(documentTypeList);
+            var mappedDocumentTypes = _mapper.Map<List<GetAllDocumentTypesResponse>>(_dbContext.DocumentTypes.ToListAsync());
             return await Result<List<GetAllDocumentTypesResponse>>.SuccessAsync(mappedDocumentTypes);
         }
     }

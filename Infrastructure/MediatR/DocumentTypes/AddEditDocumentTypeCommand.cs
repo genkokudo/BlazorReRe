@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using BlazorPractice.Application.Interfaces.Repositories;
-using BlazorPractice.Domain.Entities.Misc;
-using BlazorPractice.Shared.Constants.Application;
-using BlazorPractice.Shared.Wrapper;
+using BlazorReRe.Shared.Wrapper;
+using Domain.Entities.Misc;
+using Infrastructure.Contexts;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
@@ -17,48 +16,48 @@ namespace Infrastructure.MediatR.DocumentTypes
     {
         public int Id { get; set; }
         [Required]
-        public string Name { get; set; }
+        public string? Name { get; set; }
         [Required]
-        public string Description { get; set; }
+        public string? Description { get; set; }
     }
 
     internal class AddEditDocumentTypeCommandHandler : IRequestHandler<AddEditDocumentTypeCommand, Result<int>>
     {
         private readonly IMapper _mapper;
         private readonly IStringLocalizer<AddEditDocumentTypeCommandHandler> _localizer;
-        private readonly IUnitOfWork<int> _unitOfWork;
+        private readonly ApplicationDbContext _dbContext;
 
-        public AddEditDocumentTypeCommandHandler(IUnitOfWork<int> unitOfWork, IMapper mapper, IStringLocalizer<AddEditDocumentTypeCommandHandler> localizer)
+        public AddEditDocumentTypeCommandHandler(ApplicationDbContext dbContext, IMapper mapper, IStringLocalizer<AddEditDocumentTypeCommandHandler> localizer)
         {
-            _unitOfWork = unitOfWork;
+            _dbContext = dbContext;
             _mapper = mapper;
             _localizer = localizer;
         }
 
         public async Task<Result<int>> Handle(AddEditDocumentTypeCommand command, CancellationToken cancellationToken)
         {
-            if (await _unitOfWork.Repository<DocumentType>().Entities.Where(p => p.Id != command.Id)
+            // リポジトリがなかったら作成して、そのキャッシュを取得
+            if (await _dbContext.DocumentTypes.Where(p => p.Id != command.Id)
                 .AnyAsync(p => p.Name == command.Name, cancellationToken))
             {
                 return await Result<int>.FailAsync(_localizer["Document type with this name already exists."]);
             }
 
-            if (command.Id == 0)
+            if (command.Id == 0)    // 追加の場合
             {
-                var documentType = _mapper.Map<DocumentType>(command);
-                await _unitOfWork.Repository<DocumentType>().AddAsync(documentType);
-                await _unitOfWork.CommitAndRemoveCache(cancellationToken, ApplicationConstants.Cache.GetAllDocumentTypesCacheKey);
+                var documentType = _mapper.Map<DocumentType>(command);                      // AutoMapperで変換
+                await _dbContext.DocumentTypes.AddAsync(documentType);
+                await _dbContext.SaveChangesAsync();
                 return await Result<int>.SuccessAsync(documentType.Id, _localizer["Document Type Saved"]);
             }
             else
             {
-                var documentType = await _unitOfWork.Repository<DocumentType>().GetByIdAsync(command.Id);
+                var documentType = await _dbContext.DocumentTypes.FindAsync(command.Id);
                 if (documentType != null)
                 {
                     documentType.Name = command.Name ?? documentType.Name;
                     documentType.Description = command.Description ?? documentType.Description;
-                    await _unitOfWork.Repository<DocumentType>().UpdateAsync(documentType);
-                    await _unitOfWork.CommitAndRemoveCache(cancellationToken, ApplicationConstants.Cache.GetAllDocumentTypesCacheKey);
+                    await _dbContext.SaveChangesAsync();
                     return await Result<int>.SuccessAsync(documentType.Id, _localizer["Document Type Updated"]);
                 }
                 else

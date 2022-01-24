@@ -1,5 +1,5 @@
 ﻿@page "/document-types"
-@using BlazorApp.Shared.Models
+@using Infrastructure.MediatR.DocumentTypes
 @inject HttpClient Http
 <h1>User Data</h1>
 <p>Blazor CRUD operation</p>
@@ -66,7 +66,7 @@ else
 }
 @code {
     // https://www.c-sharpcorner.com/article/crud-operations-using-blazor-net-6-0-entity-framework-core/
-    // 
+    // DataにList<GetAllDocumentTypesResponse>が格納されているレスポンスが来ることになっている
     protected List<User> userList = new();
     protected List<User> searchUserData = new();
     protected User user = new();
@@ -77,7 +77,7 @@ else
     }
     protected async Task GetUser()
     {
-        userList = await Http.GetFromJsonAsync<List<User>>("api/User");
+        userList = await Http.GetFromJsonAsync<List<User>>("api/DocumentTypes");
         searchUserData = userList;
     }
     protected void FilterUser()
