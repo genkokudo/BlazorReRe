@@ -79,6 +79,19 @@ Includeできない。（できるけど難しい？）
 * 検索結果のキャッシュ  
 練習なのでしない。
 
+# 問題
+* Microsoft.AspNetCore.App のランタイム パックがありませんでした。  
+このエラーはMicrosoft.AspNetCore.ApiAuthorization.IdentityServer があるものをプロジェクト参照すると出る。
+InfrastructureはDB更新に使っているので、ここ以外にレスポンスの型を移動させるか、モデルクラスを作ってMapする必要がある。
+WeatherForecastに倣う場合、SharedにModelを作るのが適切か。
+
+→次はWeatherForecastに倣ってAPIを直しましょう。
+→または、Modelは作らずにSharedにMediatoRの入れ物を移すだけでOK？
+→↑は出来ればModel層を作っておきたい。。Pizzaはデータをサーバに送る時どうやってた？
+→モデルとか作らずに全部SharedにEntityを書いてる。MediatoRが邪魔・・・
+
+
+
 
 
 

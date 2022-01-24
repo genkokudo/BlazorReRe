@@ -18,7 +18,7 @@ namespace BlazorReRe.Server.Controllers.Misc
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var documentTypes = await _mediator.Send(new GetAllDocumentTypesQuery());
+            var documentTypes = await _mediator.Send(new GetAllDocumentTypesQuery());   // Result<List<GetAllDocumentTypesResponse>>が返ってくるが、SharedのModelにMapしてクライアントに返したい。
             return Ok(documentTypes);
         }
 
