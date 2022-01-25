@@ -36,18 +36,26 @@ BaseApiControllerを作成し、コントローラはMediatRを使用するように指定。（要らない
 
 * MediatRを使用する  
 Serverの初期処理にAddAutoMapperとAddMediatRを追加。  
-BlazorHeroから移す。Application.Featuresから、Infrastructure.MediatRへ。  
+（バージョンが合わないと警告が出るので、その場合は下げること）  
+BlazorHeroから移す。Application.Featuresから、Server.MediatRへ。  
+（InfrastructureにMediatRを置いたら初期処理でMediatR登録されなかった。アセンブリ指定方法が分からない）  
 BlazorHeroはフォルダ分けすぎなので、テーブルごとにフォルダを切る。  
-検索はQueryとResponse、DB更新はCommandという名前を付ける。  
+検索はQueryとResponse、DB更新はCommandという名前を付けるのが決まり。  
 
 どうせ全てのAPI結果にSucceededフラグとMessagesはあった方がいいので、BlazorHeroみたいにResultでラップした方が便利。   
 というわけでBlazorPractice.Shared.WrapperからResultを移してくる。
 
 * AutoMapperを使用する  
-しゅくだい。BlazorHeroから写してくること
+ConfigureServicesにAddAutoMapperを書く  
+ApplicationのMappingsをServerプロジェクトにコピー。
+BlazorHeroと違ってResultもマップするので、`CreateMap(typeof(Result<>), typeof(Result<>)).ReverseMap();`が必要。
 
 * Localizerを実装する  
 した方が良いけど、実装の流れが分かっていないのでコメントアウトしておいてCRUDが出来たらつける。
+
+* クライアントサーバやり取りデータモデルの作成
+SharedにModelを作成する。
+Modelは画面に合わせて作成し、ControllerでMediatR用クエリに変換する。
 
 * データ一覧の取得（クライアント側）  
 ClientのPagesに新しくページを作成。  
@@ -61,9 +69,11 @@ https://www.c-sharpcorner.com/article/crud-operations-using-blazor-net-6-0-entit
 
 ServerとInfrastructureに対して  
 PM> Install-Package AutoMapper  
+PM> Install-Package AutoMapper.Extensions.Microsoft.DependencyInjection  
+
+Serverに対して  
 PM> Install-Package MediatR  
 PM> Install-Package MediatR.Extensions.Microsoft.DependencyInjection  
-PM> Install-Package AutoMapper.Extensions.Microsoft.DependencyInjection  
 
 * FluentValidation
 
@@ -80,15 +90,28 @@ Includeできない。（できるけど難しい？）
 練習なのでしない。
 
 # 問題
-* Microsoft.AspNetCore.App のランタイム パックがありませんでした。  
-このエラーはMicrosoft.AspNetCore.ApiAuthorization.IdentityServer があるものをプロジェクト参照すると出る。
+* 「Microsoft.AspNetCore.App のランタイム パックがありませんでした。」  
+このエラーはClientが、Microsoft.AspNetCore.ApiAuthorization.IdentityServer があるプロジェクトを参照すると出る。
 InfrastructureはDB更新に使っているので、ここ以外にレスポンスの型を移動させるか、モデルクラスを作ってMapする必要がある。
-WeatherForecastに倣う場合、SharedにModelを作るのが適切か。
 
-→次はWeatherForecastに倣ってAPIを直しましょう。
-→または、Modelは作らずにSharedにMediatoRの入れ物を移すだけでOK？
-→↑は出来ればModel層を作っておきたい。。Pizzaはデータをサーバに送る時どうやってた？
-→モデルとか作らずに全部SharedにEntityを書いてる。MediatoRが邪魔・・・
+* フロントからCRUDまでの流れ
+クライアントとサーバのやり取りに使うデータモデルは、Sharedに置くのが基本。  
+また、クライアント入力とMediatRのQueryや、クライアントと表示とMediatRのResponseが対応しているとは限らないので、それをControllerで吸収すべき。  
+SharedのModelは画面に合わせた形で作成すると綺麗にできるのでは？
+
+
+* ローカライズ（エラーが出るから中止）  
+* https://kuttsun.blogspot.com/2017/09/aspnet-core.html  
+ServerのExtentions（初期処理）に以下を追加。  
+UseRequestLocalizationByCulture  
+AddServerLocalization  
+
+SharedのConstantsのLocalizationをコピー
+
+GetAllには無いけど、他の所で使ってるから導入しなきゃいけないなあ
+
+* https://localhost:7061/api/DocumentTypes  
+
 
 
 

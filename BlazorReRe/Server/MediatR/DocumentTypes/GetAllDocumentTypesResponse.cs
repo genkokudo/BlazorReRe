@@ -1,6 +1,6 @@
-﻿namespace Infrastructure.MediatR.DocumentTypes
+﻿namespace BlazorReRe.Server.MediatR.DocumentTypes
 {
-    public class GetDocumentTypeByIdResponse
+    public class GetAllDocumentTypesResponse
     {
         public int Id { get; set; }
         public string? Name { get; set; }

@@ -1,5 +1,6 @@
 ﻿@page "/document-types"
-@using Infrastructure.MediatR.DocumentTypes
+@using BlazorReRe.Shared.Model.DocumentTypes
+@using BlazorReRe.Shared.Wrapper
 @inject HttpClient Http
 <h1>User Data</h1>
 <p>Blazor CRUD operation</p>
@@ -61,10 +62,10 @@ else
 }
 @code {
     // https://www.c-sharpcorner.com/article/crud-operations-using-blazor-net-6-0-entity-framework-core/
-    // DataにList<GetAllDocumentTypesResponse>が格納されているレスポンスが来ることになっている
-    protected List<GetAllDocumentTypesResponse> userList = new();
-    protected List<GetAllDocumentTypesResponse> searchUserData = new();
-    protected GetAllDocumentTypesResponse user = new();
+    // DataにList<DocumentTypeRow>が格納されているレスポンスが来ることになっている
+    protected List<DocumentTypeRow>? userList = new();
+    protected List<DocumentTypeRow>? searchUserData = new();
+    protected DocumentTypeRow? user = new();
     protected string SearchString { get; set; } = string.Empty;
     protected override async Task OnInitializedAsync()
     {
@@ -72,15 +73,16 @@ else
     }
     protected async Task GetUser()
     {
-        userList = await Http.GetFromJsonAsync<List<GetAllDocumentTypesResponse>>("api/DocumentTypes");
+        var result = await Http.GetFromJsonAsync<Result<List<DocumentTypeRow>>>("api/DocumentTypes");
+        userList = result?.Data;
         searchUserData = userList;
     }
     protected void FilterUser()
     {
         if (!string.IsNullOrEmpty(SearchString))
         {
-            userList = searchUserData
-                .Where(x => x.Name.IndexOf(SearchString, StringComparison.OrdinalIgnoreCase) != -1)
+            userList = searchUserData?
+                .Where(x => x.Name?.IndexOf(SearchString, StringComparison.OrdinalIgnoreCase) != -1)
                 .ToList();
         }
         else
@@ -90,7 +92,7 @@ else
     }
     protected void DeleteConfirm(int Id)
     {
-        user = userList.FirstOrDefault(x => x.Id == Id);
+        user = userList?.FirstOrDefault(x => x.Id == Id);
     }
     public void ResetSearch()
     {

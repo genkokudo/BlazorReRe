@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Infrastructure.MediatR.DocumentTypes
+namespace BlazorReRe.Server.MediatR.DocumentTypes
 {
     public class GetAllDocumentTypesQuery : IRequest<Result<List<GetAllDocumentTypesResponse>>>
     {
@@ -30,7 +30,7 @@ namespace Infrastructure.MediatR.DocumentTypes
 
         public async Task<Result<List<GetAllDocumentTypesResponse>>> Handle(GetAllDocumentTypesQuery request, CancellationToken cancellationToken)
         {
-            var mappedDocumentTypes = _mapper.Map<List<GetAllDocumentTypesResponse>>(_dbContext.DocumentTypes.ToListAsync());
+            var mappedDocumentTypes = _mapper.Map<List<GetAllDocumentTypesResponse>>(await _dbContext.DocumentTypes.ToListAsync());
             return await Result<List<GetAllDocumentTypesResponse>>.SuccessAsync(mappedDocumentTypes);
         }
     }

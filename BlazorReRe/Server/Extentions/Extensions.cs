@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using MediatR;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using System.Globalization;
 
 namespace BlazorReRe.Server.Extentions
 {
@@ -17,7 +19,7 @@ namespace BlazorReRe.Server.Extentions
         public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
         {
             // コンテナにサービスを追加する。
-            builder.Services.AddCurrentUserService();               // 現在のユーザのClainやIDを取得するアクセサをサービス登録する
+            builder.Services.AddCurrentUserService();                       // 現在のユーザのClainやIDを取得するアクセサをサービス登録する
             builder.Services.AddDatabase(builder.Configuration);
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
             builder.Services.AddApplicationLayer();                         // AutoMapperとMediatRを使用する
@@ -63,6 +65,7 @@ namespace BlazorReRe.Server.Extentions
                     .UseSqlServer(configuration.GetConnectionString("DefaultConnection")))
             .AddTransient<IDatabaseSeeder, DatabaseSeeder>()
             ;
+
     }
 
     internal static class WebApplicationExtensions

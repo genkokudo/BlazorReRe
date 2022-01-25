@@ -1,4 +1,7 @@
-﻿using Infrastructure.MediatR.DocumentTypes;
+﻿using AutoMapper;
+using BlazorReRe.Server.MediatR.DocumentTypes;
+using BlazorReRe.Shared.Model.DocumentTypes;
+using BlazorReRe.Shared.Wrapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -10,6 +13,13 @@ namespace BlazorReRe.Server.Controllers.Misc
     //[Authorize]
     public class DocumentTypesController : BaseApiController<DocumentTypesController>
     {
+        private readonly IMapper _mapper;
+
+        public DocumentTypesController(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
+
         /// <summary>
         /// Get All Document Types
         /// </summary>
@@ -18,46 +28,51 @@ namespace BlazorReRe.Server.Controllers.Misc
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var documentTypes = await _mediator.Send(new GetAllDocumentTypesQuery());   // Result<List<GetAllDocumentTypesResponse>>が返ってくるが、SharedのModelにMapしてクライアントに返したい。
-            return Ok(documentTypes);
+            // Result<List<GetAllDocumentTypesResponse>>が返ってくる
+            var documentTypes = await _mediator.Send(new GetAllDocumentTypesQuery());
+
+            // Result<List<DocumentTypeRow>>に変換
+            var documentTypess = _mapper.Map<Result<List<GetAllDocumentTypesResponse>>, Result<List<DocumentTypeRow>>>(documentTypes);
+
+            return Ok(documentTypess);
         }
 
-        /// <summary>
-        /// Get Document Type By Id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>Status 200 Ok</returns>
-        //[Authorize(Policy = Permissions.DocumentTypes.View)]
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            var documentType = await _mediator.Send(new GetDocumentTypeByIdQuery { Id = id });
-            return Ok(documentType);
-        }
+        ///// <summary>
+        ///// Get Document Type By Id
+        ///// </summary>
+        ///// <param name="id"></param>
+        ///// <returns>Status 200 Ok</returns>
+        ////[Authorize(Policy = Permissions.DocumentTypes.View)]
+        //[HttpGet("{id}")]
+        //public async Task<IActionResult> GetById(int id)
+        //{
+        //    var documentType = await _mediator.Send(new GetDocumentTypeByIdQuery { Id = id });
+        //    return Ok(documentType);
+        //}
 
-        /// <summary>
-        /// Create/Update a Document Type
-        /// </summary>
-        /// <param name="command"></param>
-        /// <returns>Status 200 OK</returns>
-        //[Authorize(Policy = Permissions.DocumentTypes.Create)]
-        [HttpPost]
-        public async Task<IActionResult> Post(AddEditDocumentTypeCommand command)
-        {
-            return Ok(await _mediator.Send(command));
-        }
+        ///// <summary>
+        ///// Create/Update a Document Type
+        ///// </summary>
+        ///// <param name="command"></param>
+        ///// <returns>Status 200 OK</returns>
+        ////[Authorize(Policy = Permissions.DocumentTypes.Create)]
+        //[HttpPost]
+        //public async Task<IActionResult> Post(AddEditDocumentTypeCommand command)
+        //{
+        //    return Ok(await _mediator.Send(command));
+        //}
 
-        /// <summary>
-        /// Delete a Document Type
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>Status 200 OK</returns>
-        //[Authorize(Policy = Permissions.DocumentTypes.Delete)]
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            return Ok(await _mediator.Send(new DeleteDocumentTypeCommand { Id = id }));
-        }
+        ///// <summary>
+        ///// Delete a Document Type
+        ///// </summary>
+        ///// <param name="id"></param>
+        ///// <returns>Status 200 OK</returns>
+        ////[Authorize(Policy = Permissions.DocumentTypes.Delete)]
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    return Ok(await _mediator.Send(new DeleteDocumentTypeCommand { Id = id }));
+        //}
 
         ///// <summary>
         ///// Search Document Types and Export to Excel
