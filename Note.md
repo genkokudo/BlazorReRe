@@ -105,7 +105,7 @@ SharedのModelは画面に合わせた形で作成すると綺麗にできるのでは？
 * サインインなしでAPI叩くとエラー  
 AccessTokenNotAvailableException  
 「認証」オプションを有効にして作成したプロジェクトは、サインインしているかどうかに関わらずHTTP リクエストに常にアクセストークンを添付するよう構成されている。  
-
+これはClientのAddHttpClientの所を書き換えて対応する。
 
 * ローカライズ（エラーが出るから中止）  
 * https://kuttsun.blogspot.com/2017/09/aspnet-core.html  

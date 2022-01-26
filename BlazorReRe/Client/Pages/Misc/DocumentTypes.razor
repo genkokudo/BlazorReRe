@@ -1,7 +1,8 @@
 ﻿@page "/document-types"
+@using BlazorReRe.Client.Infrastructure
 @using BlazorReRe.Shared.Model.DocumentTypes
 @using BlazorReRe.Shared.Wrapper
-@inject HttpClient Http
+@inject PublicClient Http
 <h1>Document types</h1>
 <p>Documentの種類です</p>
 <div class="row">
@@ -63,7 +64,6 @@ else
     </table>
 }
 @code {
-    // https://www.c-sharpcorner.com/article/crud-operations-using-blazor-net-6-0-entity-framework-core/
     protected List<DocumentTypeRow>? dataList = new();
     protected List<DocumentTypeRow>? searchData = new();
     protected DocumentTypeRow? row = new();
@@ -74,7 +74,7 @@ else
     }
     protected async Task GetData()
     {
-        var result = await Http.GetFromJsonAsync<Result<List<DocumentTypeRow>>>("api/DocumentTypes");       // AccessTokenNotAvailableException
+        var result = await Http.Client.GetFromJsonAsync<Result<List<DocumentTypeRow>>>("api/DocumentTypes");
         dataList = result?.Data;
         searchData = dataList;
     }

@@ -1,19 +1,10 @@
-﻿//using Blazored.LocalStorage;
-//using BlazorPractice.Client.Infrastructure.Authentication;
-//using BlazorPractice.Client.Infrastructure.Managers;
-//using BlazorPractice.Client.Infrastructure.Managers.ExtendedAttribute;
-//using BlazorPractice.Client.Infrastructure.Managers.Preferences;
-//using BlazorPractice.Domain.Entities.ExtendedAttributes;
-//using BlazorPractice.Domain.Entities.Misc;
-//using BlazorPractice.Shared.Constants.Permission;
+﻿using BlazorReRe.Client.Infrastructure;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-//using MudBlazor;
-//using MudBlazor.Services;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -29,7 +20,8 @@ namespace BlazorReRe.Client.Extensions
     /// </summary>
     public static class WebAssemblyHostBuilderExtensions
     {
-        private const string ClientName = "BlazorReRe.ServerAPI";
+        private const string ClientName = "private";
+        private const string PublicClientName = "public";
 
         public static WebAssemblyHostBuilder AddRootComponents(this WebAssemblyHostBuilder builder)
         {
@@ -87,18 +79,39 @@ namespace BlazorReRe.Client.Extensions
             //    .AddHttpMessageHandler<AuthenticationHeaderHandler>();      // ローカルストレージに認証トークンがあれば、Bearer認証にする
             //builder.Services.AddHttpClientInterceptor();
 
+            // HTTPクライアントを複数使用するので、@inject HttpClientは使用禁止。@inject IHttpClientFactoryを使用すること。
+
+
+
+
+            // サインインが不要なAPI用のHTTPクライアント
+            // @inject PublicClient Http で使用する
             builder.Services
-                // サーバープロジェクトへのリクエスト時にアクセストークンを含むHttpClientインスタンスを提供する。
-                // これがあるときにサインインせずにAPIを叩くとエラーになるので注意。
                 .AddScoped(sp => sp
                     .GetRequiredService<IHttpClientFactory>()
-                    .CreateClient(ClientName))
-                .AddHttpClient(ClientName, client =>
+                    .CreateClient(PublicClientName))
+                .AddHttpClient<PublicClient>(PublicClientName, client =>
+                {
+                    client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
+                });
+
+            // サインインが必要なAPI用のHTTPクライアント
+            // @inject HttpClient Http で使用する（後からAddHttpClientした方のインスタンスが呼ばれる）
+            builder.Services
+                // サーバープロジェクトへのリクエスト時にアクセストークンを含むHttpClientインスタンスを提供する。
+                .AddScoped(sp => sp
+                    .GetRequiredService<IHttpClientFactory>()
+                    .CreateClient(ClientName))                  // 恐らくクライアントのインスタンスを溜めておき、いい感じに使いまわしたり適切なタイミングで破棄したり色々やってくれる
+                .AddHttpClient<PrivateClient>(ClientName, client =>
                 {
                     client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
                 })
-                .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>()    // AuthorizationMessageHandlerを継承しているが、これが発信リクエストの認証ヘッダーにトークンがない場合は例外を投げてくる。
+                // AuthorizationMessageHandlerを継承しているが、これが発信リクエストの認証ヘッダーにトークンがない場合は例外を投げてくる。
+                // これがあるときにサインインせずにAPIを叩くとエラーになるので注意。
+                .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>()
             ;
+
+
 
             builder.Services.AddApiAuthorization();     // SPA アプリケーションの認証をサポート。詳しくはわからん（BlazorHeroには無い）
 
