@@ -61,6 +61,9 @@ Modelは画面に合わせて作成し、ControllerでMediatR用クエリに変換する。
 ClientのPagesに新しくページを作成。  
 NavMenu.razorにリンクを追加する。  
 
+* Font Awesome 5を追加  
+Blazorに直接JSのロード指定は書けないので、index.htmlに書く。
+
 # やること
 * ユーザがデータを登録する(CRUD)  
 https://www.c-sharpcorner.com/article/crud-operations-using-blazor-net-6-0-entity-framework-core/
