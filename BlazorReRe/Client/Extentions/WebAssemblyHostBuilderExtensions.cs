@@ -89,6 +89,7 @@ namespace BlazorReRe.Client.Extensions
 
             builder.Services
                 // サーバープロジェクトへのリクエスト時にアクセストークンを含むHttpClientインスタンスを提供する。
+                // これがあるときにサインインせずにAPIを叩くとエラーになるので注意。
                 .AddScoped(sp => sp
                     .GetRequiredService<IHttpClientFactory>()
                     .CreateClient(ClientName))
@@ -96,7 +97,7 @@ namespace BlazorReRe.Client.Extensions
                 {
                     client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress);
                 })
-                .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>()
+                .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>()    // AuthorizationMessageHandlerを継承しているが、これが発信リクエストの認証ヘッダーにトークンがない場合は例外を投げてくる。
             ;
 
             builder.Services.AddApiAuthorization();     // SPA アプリケーションの認証をサポート。詳しくはわからん（BlazorHeroには無い）
@@ -165,4 +166,5 @@ namespace BlazorReRe.Client.Extensions
         //    }
         //}
     }
+
 }

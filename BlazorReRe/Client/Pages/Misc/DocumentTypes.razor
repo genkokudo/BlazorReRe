@@ -74,7 +74,7 @@ else
     }
     protected async Task GetData()
     {
-        var result = await Http.GetFromJsonAsync<Result<List<DocumentTypeRow>>>("api/DocumentTypes");
+        var result = await Http.GetFromJsonAsync<Result<List<DocumentTypeRow>>>("api/DocumentTypes");       // AccessTokenNotAvailableException
         dataList = result?.Data;
         searchData = dataList;
     }
