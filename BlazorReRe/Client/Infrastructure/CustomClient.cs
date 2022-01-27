@@ -1,5 +1,6 @@
 ﻿namespace BlazorReRe.Client.Infrastructure
 {
+    // サインイン不要APIを作るとHTTPクライアントがエラーを出すので対処する
     public abstract class CustomClient
     {
         public HttpClient Client { get; }

@@ -1,5 +1,6 @@
 ﻿namespace BlazorReRe.Server.MediatR.DocumentTypes
 {
+    // GetDocumentTypeByIdResponseと一緒。
     public class GetAllDocumentTypesResponse
     {
         public int Id { get; set; }

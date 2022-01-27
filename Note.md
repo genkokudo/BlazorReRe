@@ -100,12 +100,13 @@ InfrastructureはDB更新に使っているので、ここ以外にレスポンスの型を移動させるか、
 * フロントからCRUDまでの流れ
 クライアントとサーバのやり取りに使うデータモデルは、Sharedに置くのが基本。  
 また、クライアント入力とMediatRのQueryや、クライアントと表示とMediatRのResponseが対応しているとは限らないので、それをControllerで吸収すべき。  
-SharedのModelは画面に合わせた形で作成すると綺麗にできるのでは？
+SharedのModelは画面に合わせた形で作成すると綺麗にできるはず。
 
 * サインインなしでAPI叩くとエラー  
 AccessTokenNotAvailableException  
 「認証」オプションを有効にして作成したプロジェクトは、サインインしているかどうかに関わらずHTTP リクエストに常にアクセストークンを添付するよう構成されている。  
 これはClientのAddHttpClientの所を書き換えて対応する。
+@inject HttpClient Httpは使用禁止。
 
 * ローカライズ（エラーが出るから中止）  
 * https://kuttsun.blogspot.com/2017/09/aspnet-core.html  

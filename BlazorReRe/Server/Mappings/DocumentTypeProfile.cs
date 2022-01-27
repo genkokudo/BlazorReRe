@@ -15,7 +15,7 @@ namespace BlazorReRe.Server.Mappings
             CreateMap<GetAllDocumentTypesResponse, DocumentType>().ReverseMap();
 
             // Result<List<GetAllDocumentTypesResponse>>, Result<List<DocumentTypeRow>>の変換をするには、以下の両方必要
-            CreateMap(typeof(Result<>), typeof(Result<>)).ReverseMap();             // これは汎用なので別ソースファイルにすること
+            CreateMap(typeof(Result<>), typeof(Result<>)).ReverseMap();             // TODO:これは汎用なので別ソースファイルにすること
             CreateMap<GetAllDocumentTypesResponse, DocumentTypeRow>().ReverseMap();
         }
     }
