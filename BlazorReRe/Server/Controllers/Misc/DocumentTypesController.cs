@@ -43,7 +43,7 @@ namespace BlazorReRe.Server.Controllers.Misc
         /// <param name="id"></param>
         /// <returns>Status 200 Ok</returns>
         //[Authorize(Policy = Permissions.DocumentTypes.View)]
-        [HttpGet("{id}")]       
+        [HttpGet("{id}")]       // ここで"getById/{id}"のようにルーティングしても良い
         public async Task<IActionResult> GetById(int id)
         {
             var documentType = await _mediator.Send(new GetDocumentTypeByIdQuery { Id = id });

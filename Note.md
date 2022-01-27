@@ -35,6 +35,11 @@ Server.ControllersにAPIコントローラを作成する
 BaseApiControllerを作成し、コントローラはMediatRを使用するように指定。（要らないかもー）
 
 * MediatRを使用する  
+ServerとInfrastructureに対して実行  
+```
+PM> Install-Package AutoMapper
+PM> Install-Package AutoMapper.Extensions.Microsoft.DependencyInjection
+```
 Serverの初期処理にAddAutoMapperとAddMediatRを追加。  
 （バージョンが合わないと警告が出るので、その場合は下げること）  
 BlazorHeroから移す。Application.Featuresから、Server.MediatRへ。  
@@ -46,6 +51,11 @@ BlazorHeroはフォルダ分けすぎなので、テーブルごとにフォルダを切る。
 というわけでBlazorPractice.Shared.WrapperからResultを移してくる。
 
 * AutoMapperを使用する  
+Serverに対して実行  
+```
+PM> Install-Package MediatR  
+PM> Install-Package MediatR.Extensions.Microsoft.DependencyInjection
+```
 ConfigureServicesにAddAutoMapperを書く  
 ApplicationのMappingsをServerプロジェクトにコピー。
 BlazorHeroと違ってResultもマップするので、`CreateMap(typeof(Result<>), typeof(Result<>)).ReverseMap();`が必要。
@@ -71,21 +81,16 @@ ServerのExtentions（初期処理）に以下を追加。関連したクラスもコピーしてくる。
 `services.AddLocalization()` これはIStringLocalizerのDIに必要なので、ローカライズの可能性があるシステムは入れておき、最初からローカライズに対応した記述でコーディングすること。  
 これでIStringLocalizerがDIできるようになるので、対応が必要になりそうなシステムではやっておくこと。
 
+* 更新と削除の実装  
+普通にできた。登録と更新は分けなくても良い。  
+
 # やること
-* ユーザがデータを登録する(CRUD)  
-https://www.c-sharpcorner.com/article/crud-operations-using-blazor-net-6-0-entity-framework-core/
 * 各テーブルにユーザIDを持たせて、登録時に自動で入れる（インタフェースを追加するが、監査項目インタフェースとは分ける）
 * グローバルクエリフィルタを実装して、ユーザが登録したデータだけ表示する  
 
-ServerとInfrastructureに対して  
-PM> Install-Package AutoMapper  
-PM> Install-Package AutoMapper.Extensions.Microsoft.DependencyInjection  
-
-Serverに対して  
-PM> Install-Package MediatR  
-PM> Install-Package MediatR.Extensions.Microsoft.DependencyInjection  
-
-* FluentValidation
+* FluentValidation  
+クライアント側のバリデーションとサーバ側のバリデーションをおさらいすること
+クライアント側のバリデーションはセキュリティ的には無意味なので、ユーザビリティ向上のためだと思うこと。
 
 # やめたこと
 * UnitOfWorkパターン  
@@ -118,8 +123,11 @@ AccessTokenNotAvailableException
 * APIのルーティングが上手くいかず、「Sorry, there's nothing at this address.」が出る  
 気のせい。なんか勝手に直った。`MapControllers()`は書いているか確認すること。
 
-# 動作確認
-* https://localhost:7061/api/DocumentTypes  
+* その他CRUDで失敗したら
+AutoMapperミスってる可能性があるのでログをよく見ること
+
+
+
 
 
 
