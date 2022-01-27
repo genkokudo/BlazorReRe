@@ -64,6 +64,13 @@ NavMenu.razorにリンクを追加する。
 * Font Awesome 5を追加  
 Blazorに直接JSのロード指定は書けないので、index.htmlに書く。
 
+* ローカライズ
+* https://kuttsun.blogspot.com/2017/09/aspnet-core.html  
+ServerのExtentions（初期処理）に以下を追加。関連したクラスもコピーしてくる。  
+`app.UseRequestLocalizationByCulture()`  
+`services.AddLocalization()` これはIStringLocalizerのDIに必要なので、ローカライズの可能性があるシステムは入れておき、最初からローカライズに対応した記述でコーディングすること。  
+これでIStringLocalizerがDIできるようになるので、対応が必要になりそうなシステムではやっておくこと。
+
 # やること
 * ユーザがデータを登録する(CRUD)  
 https://www.c-sharpcorner.com/article/crud-operations-using-blazor-net-6-0-entity-framework-core/
@@ -108,15 +115,8 @@ AccessTokenNotAvailableException
 これはClientのAddHttpClientの所を書き換えて対応する。
 @inject HttpClient Httpは使用禁止。
 
-* ローカライズ（エラーが出るから中止）  
-* https://kuttsun.blogspot.com/2017/09/aspnet-core.html  
-ServerのExtentions（初期処理）に以下を追加。  
-UseRequestLocalizationByCulture  
-AddServerLocalization  
-
-SharedのConstantsのLocalizationをコピー
-
-GetAllには無いけど、他の所で使ってるから導入しなきゃいけないなあ
+* APIのルーティングが上手くいかず、「Sorry, there's nothing at this address.」が出る  
+気のせい。なんか勝手に直った。`MapControllers()`は書いているか確認すること。
 
 # 動作確認
 * https://localhost:7061/api/DocumentTypes  

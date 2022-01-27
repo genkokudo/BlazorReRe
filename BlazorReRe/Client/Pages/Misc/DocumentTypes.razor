@@ -6,9 +6,9 @@
 <p>Documentの種類です</p>
 <div class="row">
     <div class="col-md-6">
-        <a href='/document-types/add' class="btn btn-primary" role="button">
+        <a href='/document-types/create' class="btn btn-primary" role="button">
             <i class="fas fa-plus-circle"></i>
-            Add Document Type
+            Create
         </a>
     </div>
     <div class="input-group col">
@@ -63,9 +63,9 @@ else
     </table>
 }
 @code {
-    protected List<DocumentTypeRow>? dataList = new();
-    protected List<DocumentTypeRow>? searchData = new();
-    protected DocumentTypeRow? row = new();
+    protected List<DocumentTypeDto>? dataList = new();
+    protected List<DocumentTypeDto>? searchData = new();
+    protected DocumentTypeDto? row = new();
     protected string SearchString { get; set; } = string.Empty;
     protected override async Task OnInitializedAsync()
     {
@@ -73,7 +73,7 @@ else
     }
     protected async Task GetData()
     {
-        var result = await Http.Client.GetFromJsonAsync<Result<List<DocumentTypeRow>>>("api/DocumentTypes");
+        var result = await Http.Client.GetFromJsonAsync<Result<List<DocumentTypeDto>>>("api/DocumentTypes");
         dataList = result?.Data;
         searchData = dataList;
     }

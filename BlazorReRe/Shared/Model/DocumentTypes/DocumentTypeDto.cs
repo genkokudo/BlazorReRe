@@ -5,7 +5,7 @@
     /// GetAllDocumentTypesResponse
     /// GetDocumentTypeByIdResponse と同じ構造
     /// </summary>
-    public class DocumentTypeRow
+    public class DocumentTypeDto
     {
         public int Id { get; set; }
         public string? Name { get; set; }

@@ -36,7 +36,6 @@ namespace BlazorReRe.Server.MediatR.DocumentTypes
 
         public async Task<Result<int>> Handle(AddEditDocumentTypeCommand command, CancellationToken cancellationToken)
         {
-            // リポジトリがなかったら作成して、そのキャッシュを取得
             if (await _dbContext.DocumentTypes.Where(p => p.Id != command.Id)
                 .AnyAsync(p => p.Name == command.Name, cancellationToken))
             {

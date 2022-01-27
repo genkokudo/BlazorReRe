@@ -21,7 +21,7 @@ namespace BlazorReRe.Server.Controllers.Misc
         }
 
         /// <summary>
-        /// Get All Document Types
+        /// 全てのデータを取得
         /// </summary>
         /// <returns>Status 200 OK</returns>
         //[Authorize(Policy = Permissions.DocumentTypes.View)]
@@ -32,47 +32,49 @@ namespace BlazorReRe.Server.Controllers.Misc
             var documentTypes = await _mediator.Send(new GetAllDocumentTypesQuery());
 
             // Result<List<DocumentTypeRow>>に変換
-            var documentTypess = _mapper.Map<Result<List<GetAllDocumentTypesResponse>>, Result<List<DocumentTypeRow>>>(documentTypes);
+            var documentTypess = _mapper.Map<Result<List<GetAllDocumentTypesResponse>>, Result<List<DocumentTypeDto>>>(documentTypes);
 
             return Ok(documentTypess);
         }
 
-        ///// <summary>
-        ///// Get Document Type By Id
-        ///// </summary>
-        ///// <param name="id"></param>
-        ///// <returns>Status 200 Ok</returns>
-        ////[Authorize(Policy = Permissions.DocumentTypes.View)]
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> GetById(int id)
-        //{
-        //    var documentType = await _mediator.Send(new GetDocumentTypeByIdQuery { Id = id });
-        //    return Ok(documentType);
-        //}
+        /// <summary>
+        /// IDを指定してデータを取得
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Status 200 Ok</returns>
+        //[Authorize(Policy = Permissions.DocumentTypes.View)]
+        [HttpGet("{id}")]       
+        public async Task<IActionResult> GetById(int id)
+        {
+            var documentType = await _mediator.Send(new GetDocumentTypeByIdQuery { Id = id });
+            return Ok(documentType);
+        }
 
-        ///// <summary>
-        ///// Create/Update a Document Type
-        ///// </summary>
-        ///// <param name="command"></param>
-        ///// <returns>Status 200 OK</returns>
-        ////[Authorize(Policy = Permissions.DocumentTypes.Create)]
-        //[HttpPost]
-        //public async Task<IActionResult> Post(AddEditDocumentTypeCommand command)
-        //{
-        //    return Ok(await _mediator.Send(command));
-        //}
+        /// <summary>
+        /// 追加または更新を行う
+        /// （追加と更新を分ける場合は片方をHttpPutにしてPutAsJsonAsyncで送るという手がある。）
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns>Status 200 OK</returns>
+        //[Authorize(Policy = Permissions.DocumentTypes.Create)]
+        [HttpPost]
+        public async Task<IActionResult> Post(DocumentTypeDto command)
+        {
+            // DocumentTypeRowとAddEditDocumentTypeCommandは同じ構造なので直接AddEditDocumentTypeCommandで受けても良いが、そうでない画面とコードを統一するためマッピングする
+            return Ok(await _mediator.Send(_mapper.Map<AddEditDocumentTypeCommand>(command)));
+        }
 
-        ///// <summary>
-        ///// Delete a Document Type
-        ///// </summary>
-        ///// <param name="id"></param>
-        ///// <returns>Status 200 OK</returns>
-        ////[Authorize(Policy = Permissions.DocumentTypes.Delete)]
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> Delete(int id)
-        //{
-        //    return Ok(await _mediator.Send(new DeleteDocumentTypeCommand { Id = id }));
-        //}
+        /// <summary>
+        /// 指定したIDを削除する
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Status 200 OK</returns>
+        //[Authorize(Policy = Permissions.DocumentTypes.Delete)]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            return Ok(await _mediator.Send(new DeleteDocumentTypeCommand { Id = id }));
+        }
 
         ///// <summary>
         ///// Search Document Types and Export to Excel

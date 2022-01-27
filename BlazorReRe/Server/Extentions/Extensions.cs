@@ -11,6 +11,10 @@ using System.Reflection;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Globalization;
+using BlazorReRe.Shared.Localization;
+using Microsoft.AspNetCore.Localization;
+using BlazorReRe.Server.Middlewares;
+using Microsoft.Extensions.Localization;
 
 namespace BlazorReRe.Server.Extentions
 {
@@ -19,6 +23,10 @@ namespace BlazorReRe.Server.Extentions
         public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
         {
             // コンテナにサービスを追加する。
+            builder.Services.AddLocalization(options => // ローカライズファイルのパスを指定する、IStringLocalizerがDIできるようにする
+            {
+                options.ResourcesPath = "Resources";
+            });
             builder.Services.AddCurrentUserService();                       // 現在のユーザのClainやIDを取得するアクセサをサービス登録する
             builder.Services.AddDatabase(builder.Configuration);
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -90,6 +98,7 @@ namespace BlazorReRe.Server.Extentions
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();                           // wwwroot以下を静的ファイルとするはずだけど、Serverにないなあ…
 
+            app.UseRequestLocalizationByCulture();          // IStringLocalizer<T>の仕様で必要
             app.UseRouting();                               // ルーティング
 
             app.UseIdentityServer();
@@ -98,7 +107,6 @@ namespace BlazorReRe.Server.Extentions
 
             app.UseEndpoints();
             app.Initialize();                               // IDatabaseSeederで初期化（DB初期データがまだない場合にデータを入れる）
-
             return app;
         }
 
@@ -106,7 +114,7 @@ namespace BlazorReRe.Server.Extentions
             => app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
-                endpoints.MapControllers();
+                endpoints.MapControllers();                 // 属性ルーティングを有効にする
                 endpoints.MapFallbackToFile("index.html");
                 //endpoints.MapHub<SignalRHub>(ApplicationConstants.SignalR.HubUrl);
             });
@@ -139,6 +147,34 @@ namespace BlazorReRe.Server.Extentions
             {
                 initializer.Initialize();
             }
+
+            return app;
+        }
+
+        //要らないかもしれない
+        //internal static IServiceCollection AddServerLocalization(this IServiceCollection services)
+        //{
+        //    services.TryAddTransient(typeof(IStringLocalizer<>), typeof(ServerLocalizer<>));
+        //    return services;
+        //}
+        /// <summary>
+        /// IStringLocalizerの使用で必要
+        /// </summary>
+        /// <param name="app"></param>
+        /// <returns></returns>
+        internal static IApplicationBuilder UseRequestLocalizationByCulture(this IApplicationBuilder app)
+        {
+            var supportedCultures = LocalizationConstants.SupportedLanguages.Select(l => new CultureInfo(l.Code!)).ToArray();
+            app.UseRequestLocalization(options =>
+            {
+                options.SupportedUICultures = supportedCultures;
+                options.SupportedCultures = supportedCultures;
+                options.DefaultRequestCulture = new RequestCulture(supportedCultures.First());
+                options.ApplyCurrentCultureToResponseHeaders = true;    // 応答の Content-Language ヘッダーにCurrentUICulture が適用されるかどうか
+            });
+
+            // リクエストに特定のカルチャ情報がある場合、CultureInfoの設定値を変更する
+            app.UseMiddleware<RequestCultureMiddleware>();
 
             return app;
         }
