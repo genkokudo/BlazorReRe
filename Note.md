@@ -1,3 +1,10 @@
+# 先に注意すること
+* InfrastructureとDomainは作らなくて良い
+実際InfrastructureとDomainって作らなくても問題なかった。
+
+* ログイン処理を作成する場合
+ログイン処理をカスタムするためにスキャフォールディングしたら失敗したので、プロジェクト作成したらすぐにやった方が良い。
+
 # やったこと
 
 * Program.csの中をExtentionsに移動  
@@ -104,7 +111,15 @@ Includeできない。（できるけど難しい？）
 * 検索結果のキャッシュ  
 練習なのでしない。
 
+* グローバルクエリフィルタ  
+やり方はBlazorBoilerplateでも見てください。
+
 # 問題
+* ログインページを作ろうとしてらスキャフォールディングできない
+"Object reference not set to an instance of an object"が出る。  
+新品のプロジェクトだとできたので、Infrastructureとか作ったのが悪かったのかも。
+実際InfrastructureとDomainって分かれてなくても問題ない。
+
 * 「Microsoft.AspNetCore.App のランタイム パックがありませんでした。」  
 このエラーはClientが、Microsoft.AspNetCore.ApiAuthorization.IdentityServer があるプロジェクトを参照すると出る。
 InfrastructureはDB更新に使っているので、ここ以外にレスポンスの型を移動させるか、モデルクラスを作ってMapする必要がある。
