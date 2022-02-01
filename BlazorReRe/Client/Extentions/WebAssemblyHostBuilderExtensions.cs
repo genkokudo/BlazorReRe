@@ -12,7 +12,7 @@ using System.Net.Http;
 using System.Reflection;
 //using Toolbelt.Blazor.Extensions.DependencyInjection;
 
-namespace BlazorReRe.Client.Extensions
+namespace BlazorReRe.Client.Extentions
 {
     /// <summary>
     /// WebAssemblyHostBuilderを拡張することで

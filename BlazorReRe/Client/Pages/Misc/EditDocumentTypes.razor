@@ -1,5 +1,6 @@
 ﻿@page "/document-types/create"
 @page "/document-types/edit/{id:int}"
+@using BlazorReRe.Client.Models
 @using BlazorReRe.Shared.Model.DocumentTypes
 @using BlazorReRe.Shared.Wrapper
 @inject PublicClient Http
@@ -48,7 +49,16 @@
     // 登録または更新
     protected async Task Save()
     {
-        await Http.Client.PostAsJsonAsync("api/DocumentTypes", data);
+        var httpsResponse  = await Http.Client.PostAsJsonAsync("api/DocumentTypes", data);
+        if (httpsResponse.IsSuccessStatusCode)
+        {
+            // '{"data":4,"messages":["Document Type Updated"],"succeeded":true}'
+        }
+        else
+        {
+            var responseContent = httpsResponse.Content.ReadAsStringAsync().Result;
+            var response = System.Text.Json.JsonSerializer.Deserialize<FailedResponse>(responseContent);
+        }
         Cancel();
     }
 

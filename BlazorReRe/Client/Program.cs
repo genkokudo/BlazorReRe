@@ -1,5 +1,5 @@
 using BlazorReRe.Client;
-using BlazorReRe.Client.Extensions;
+using BlazorReRe.Client.Extentions;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 var builder = WebAssemblyHostBuilder

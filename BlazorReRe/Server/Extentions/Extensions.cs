@@ -15,6 +15,11 @@ using BlazorReRe.Shared.Localization;
 using Microsoft.AspNetCore.Localization;
 using BlazorReRe.Server.Middlewares;
 using Microsoft.Extensions.Localization;
+using FluentValidation.AspNetCore;
+using BlazorReRe.Server.Validators;
+using FluentValidation;
+using Domain.Entities.Misc;
+using BlazorReRe.Shared.Model.DocumentTypes;
 
 namespace BlazorReRe.Server.Extentions
 {
@@ -41,7 +46,10 @@ namespace BlazorReRe.Server.Extentions
                 .AddIdentityServerJwt();                // JsonWebTokenだっけ？
 
             // コントローラとRazor
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<DocumentTypeValidator>())   // FluentValidationを使用する
+                ;
+
             builder.Services.AddRazorPages();
 
 
