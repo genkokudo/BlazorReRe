@@ -1,5 +1,3 @@
-# これは旧ノートです。更新しないこと
-ログインが作れないのでやり直し。  
 
 
 # 先に注意すること
@@ -10,10 +8,8 @@
 ログイン処理をカスタムするためにスキャフォールディングしたら失敗したので、プロジェクト作成したらすぐにやった方が良い。
 
 # やったこと
-
 * Program.csの中をExtentionsに移動  
-殆ど意味なかった。  
-設定項目が増えてきたらメソッド分けたら見やすいかなって程度。
+殆ど意味なかったけど、設定項目ごとにメソッド分けできるのがメリット。
 
 * Infrastructureプロジェクト作成  
 クラスライブラリNET6で作成  
@@ -30,6 +26,7 @@ DbContextに上記のEntityを追加
 ※ApplicationUserは、StandardではないのでInfrastructureのModelsに置くこと。
 
 * appsettings.jsonのDB名を変更
+DB名のUUIDを消すだけ。
 * Add-Migration Initial  
 ビルドエラーが出るので、パッケージのインストールをして解消する。
 * Update-Database

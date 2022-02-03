@@ -1,0 +1,47 @@
+﻿@page "/document-types/delete/{id:int}"
+@using BlazorSecond.Shared.Model.DocumentTypes
+@using BlazorSecond.Shared.Wrapper
+@inject PublicClient Http
+@inject NavigationManager NavigationManager
+<h2>Delete Document Type</h2>
+<br />
+<div class="form-group">
+    <h4>Do you want to delete this Document Type?</h4>
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>Name</td>
+                <td>@data.Name</td>
+            </tr>
+            <tr>
+                <td>Description</td>
+                <td>@data.Description</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="form-group">
+    <input type="submit" value="Delete" @onclick="(async () => await RemoveUser())" class="btn btn-danger" />
+    <input type="submit" value="Cancel" @onclick="(() => Cancel())" class="btn btn-warning" />
+</div>
+@code {
+    [Parameter]
+    public int id { get; set; }
+    DocumentTypeDto data = new DocumentTypeDto();
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await Http.Client.GetFromJsonAsync<Result<DocumentTypeDto>>("api/DocumentTypes/" + id);
+        data = result?.Data ?? new();
+    }
+    protected async Task RemoveUser()
+    {
+        await Http.Client.DeleteAsync("api/DocumentTypes/" + id);
+        Cancel();
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("/document-types");
+    }
+}
+
+
